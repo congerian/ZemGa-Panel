@@ -1,0 +1,9 @@
+[requires]
+
+[generators]
+txt
+cmake
+
+[options]
+
+[imports]
