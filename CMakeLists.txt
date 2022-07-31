@@ -19,6 +19,8 @@ project ( ${PROJECT_NAME} VERSION ${PROJECT_VERSION} DESCRIPTION ${PROJECT_DESCR
 
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Network)
+find_package(Qt6 REQUIRED COMPONENTS Core5Compat)
 
 qt_standard_project_setup()
 
@@ -28,10 +30,12 @@ if ( WIN32 )
     set ( PLATFORM_DIR "win32" )
     add_definitions( -DWINDOWS=1 )
     set(CMAKE_WIN32_EXECUTABLE ON)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${PROJECT_SOURCE_DIR}/decode.bat")
 elseif ( WIN64 )
     set ( PLATFORM_DIR "win64" )
     add_definitions( -DWINDOWS=1 )
     set(CMAKE_WIN32_EXECUTABLE ON)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${PROJECT_SOURCE_DIR}/decode.bat")
 endif ( WIN32 )
 
 set ( BUILD_TYPE_DIR "release" )
@@ -43,6 +47,8 @@ set ( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
 
 set ( AM_COMMON_FOLDER "src/common" )
 set ( AM_EXE_FOLDER "src/exe" )
+set ( AM_RES_COMMON_FOLDER "src/common" )
+set ( AM_RES_EXE_FOLDER "src/exe" )
 
 #Conan settings
 
@@ -64,14 +70,19 @@ file( GLOB_RECURSE AM_SOURCES
     "${AM_COMMON_FOLDER}/*.cxx"
     "${AM_COMMON_FOLDER}/*.cpp")
 
-file ( GLOB_RECURSE TEST_AM_HEADERS
+file ( GLOB_RECURSE App_AM_HEADERS
     "${AM_EXE_FOLDER}/*.hxx"
     "${AM_EXE_FOLDER}/*.h" )
 
-file ( GLOB_RECURSE TEST_AM_SOURCES
+file ( GLOB_RECURSE App_AM_SOURCES
     "${AM_EXE_FOLDER}/*.cxx" 
     "${AM_EXE_FOLDER}/*.cpp")
 
+file ( GLOB_RECURSE AM_RES
+    "${AM_EXE_FOLDER}/*.*")
+
+file ( GLOB_RECURSE App_AM_RES
+    "${AM_EXE_FOLDER}/*.*")
 
 #Conan
 
@@ -87,15 +98,15 @@ set_target_properties ( AM_COMMON PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
     VERSION ${PROJECT_VERSION} )
     
-target_link_libraries ( AM_COMMON PRIVATE Qt6::Widgets)
+target_link_libraries ( AM_COMMON PRIVATE Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat)
 target_link_libraries ( AM_COMMON ${CONAN_LIBS} )
 
-#Testing exe
+#Exe
 
-add_executable ( AM_EXE ${TEST_AM_HEADERS} ${TEST_AM_SOURCES} )
+add_executable ( AM_EXE ${App_AM_HEADERS} ${App_AM_SOURCES} )
 
 set_target_properties ( AM_EXE PROPERTIES
-	OUTPUT_NAME "Test"
+	OUTPUT_NAME "App"
 	RUNTIME_OUTPUT_DIRECTORY "${BIN_DIR}" )
 
 target_include_directories( AM_EXE PRIVATE "${AM_COMMON_FOLDER}/public" )
@@ -105,4 +116,13 @@ set_target_properties(AM_EXE PROPERTIES
     MACOSX_BUNDLE ON
 )
 
-target_link_libraries ( AM_EXE PRIVATE AM_COMMON ${CONAN_LIBS} Qt6::Widgets )
+qt_add_resources(AM_COMMON "res"
+    PREFIX "/res"
+    FILES "${AM_RES}")
+
+qt_add_resources(AM_EXE "res"
+    PREFIX "/res"
+    FILES "${App_AM_RES}")
+
+target_link_libraries ( AM_EXE PRIVATE AM_COMMON ${CONAN_LIBS} Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat)
+
