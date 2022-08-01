@@ -5,5 +5,5 @@ cd ./build/ && cmake ../ -G Ninja && ^
 ninja -j 16 && ^
 cls && ^
 echo off && ^
-cd "..\bin\win32\release" && "App.exe" && ^
+cd "..\bin\win32\release" && ".\App.exe" && ^
 echo on
