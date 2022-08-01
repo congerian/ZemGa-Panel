@@ -8,4 +8,10 @@ ZG::Panel::Application::Application(int argc, char *argv[]) : QApplication(argc,
         freopen("CONOUT$", "w", stdout);
         freopen("CONOUT$", "w", stderr);
     }
+
+    mainWindow = new MainWindow();
+}
+
+ZG::Panel::Application::~Application() {
+    delete mainWindow;
 }

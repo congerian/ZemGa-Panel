@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QPushButton>
 
 #include <windows.h>
 
@@ -9,12 +10,9 @@
 
 int main(int argc, char *argv[])
 {
-    ZG::Panel::Application app(argc, argv);
-
-    ZG::Panel::MainWindow mainWindow;
-
-    mainWindow.resize(500, 500);
-
-    mainWindow.show();
-    return app.exec();
+    ZG::Panel::Application * app = new ZG::Panel::Application(argc, argv);
+    app->mainWindow->show();
+    int code = app->exec();
+    delete app;
+    return code;
 }
