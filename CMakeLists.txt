@@ -21,6 +21,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Network)
 find_package(Qt6 REQUIRED COMPONENTS Core5Compat)
+find_package(Qt6 REQUIRED COMPONENTS Svg)
 
 qt_standard_project_setup()
 
@@ -47,8 +48,8 @@ set ( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
 
 set ( AM_COMMON_FOLDER "src/common" )
 set ( AM_EXE_FOLDER "src/exe" )
-set ( AM_RES_COMMON_FOLDER "src/common" )
-set ( AM_RES_EXE_FOLDER "src/exe" )
+set ( AM_RES_COMMON_FOLDER "res/common" )
+set ( AM_RES_EXE_FOLDER "res/exe" )
 
 #Conan settings
 
@@ -79,10 +80,11 @@ file ( GLOB_RECURSE App_AM_SOURCES
     "${AM_EXE_FOLDER}/*.cpp")
 
 file ( GLOB_RECURSE AM_RES
-    "${AM_EXE_FOLDER}/*.*")
+    "${AM_RES_COMMON_FOLDER}/*.*")
 
 file ( GLOB_RECURSE App_AM_RES
-    "${AM_EXE_FOLDER}/*.*")
+    "${AM_RES_EXE_FOLDER}/*.*")
+
 
 #Conan
 
@@ -94,11 +96,11 @@ conan_basic_setup()
 add_library ( AM_COMMON SHARED ${AM_SOURCES} )
 
 set_target_properties ( AM_COMMON PROPERTIES
-    PUBLIC_HEADER AM_PUBLIC_HEADERS
-    RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
-    VERSION ${PROJECT_VERSION} )
-    
-target_link_libraries ( AM_COMMON PRIVATE Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat)
+PUBLIC_HEADER AM_PUBLIC_HEADERS
+RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
+VERSION ${PROJECT_VERSION} )
+
+target_link_libraries ( AM_COMMON PRIVATE Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat Qt6::Svg)
 target_link_libraries ( AM_COMMON ${CONAN_LIBS} )
 
 #Exe
@@ -106,23 +108,29 @@ target_link_libraries ( AM_COMMON ${CONAN_LIBS} )
 add_executable ( AM_EXE ${App_AM_HEADERS} ${App_AM_SOURCES} )
 
 set_target_properties ( AM_EXE PROPERTIES
-	OUTPUT_NAME "App"
-	RUNTIME_OUTPUT_DIRECTORY "${BIN_DIR}" )
+OUTPUT_NAME "App"
+RUNTIME_OUTPUT_DIRECTORY "${BIN_DIR}" )
 
 target_include_directories( AM_EXE PRIVATE "${AM_COMMON_FOLDER}/public" )
 
 set_target_properties(AM_EXE PROPERTIES
-    WIN32_EXECUTABLE ON
-    MACOSX_BUNDLE ON
+WIN32_EXECUTABLE ON
+MACOSX_BUNDLE ON
 )
 
-qt_add_resources(AM_COMMON "res"
-    PREFIX "/res"
-    FILES "${AM_RES}")
+qt_add_resources(AM_EXE "exe_res"
+    PREFIX "/exe_res"
+    BASE "res/exe"
+    FILES 
+        "${App_AM_RES}"
+)
 
-qt_add_resources(AM_EXE "res"
-    PREFIX "/res"
-    FILES "${App_AM_RES}")
+qt_add_resources(AM_COMMON "common_res"
+    PREFIX "/common_res"
+    BASE "res/common/"
+    FILES 
+        "${AM_RES}"
+)
 
-target_link_libraries ( AM_EXE PRIVATE AM_COMMON ${CONAN_LIBS} Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat)
+target_link_libraries ( AM_EXE PRIVATE AM_COMMON ${CONAN_LIBS} Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat Qt6::Svg)
 
