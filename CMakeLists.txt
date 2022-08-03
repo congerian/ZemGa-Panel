@@ -111,7 +111,8 @@ set_target_properties ( AM_EXE PROPERTIES
 OUTPUT_NAME "App"
 RUNTIME_OUTPUT_DIRECTORY "${BIN_DIR}" )
 
-target_include_directories( AM_EXE PRIVATE "${AM_COMMON_FOLDER}/public" )
+target_include_directories( AM_EXE PRIVATE "${AM_COMMON_FOLDER}" )
+target_include_directories( AM_EXE PRIVATE "${AM_EXE_FOLDER}" )
 
 set_target_properties(AM_EXE PROPERTIES
 WIN32_EXECUTABLE ON
