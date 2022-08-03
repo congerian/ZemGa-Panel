@@ -16,17 +16,4 @@ PanelRequester::PanelRequester (
     JsonRequester (parent)
 { }
 
-void PanelRequester::clientGetLandAll (void (*slot)(QNetworkReply *reply)) {
-    QString path    = QStringLiteral("http://") 
-                    + host 
-                    + QStringLiteral(":") 
-                    + port 
-                    + QStringLiteral("/client/get/land/all");
-    
-    qDebug() << QStringLiteral("Request: ") << path;
-
-    post(path, QUrlQuery().query().toUtf8(), slot);
-
-}
-
 }

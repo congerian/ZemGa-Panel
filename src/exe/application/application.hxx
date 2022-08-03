@@ -20,6 +20,8 @@ public:
     Application(int argc, char *argv[]);
     MainWindow * mainWindow;
     
+    PanelRequester * getRequester();
+
     ~Application();
 
 signals:
