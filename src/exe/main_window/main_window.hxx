@@ -2,7 +2,7 @@
 
 #include <QtWidgets>
 
-#include "./land_table_widget.hxx"
+#include "./land_table/land_table_widget.hxx"
 
 namespace {
     Qt::WindowFlags defaultWindowFlags = Qt::WindowFlags() 
@@ -32,7 +32,7 @@ class MainWindow : public QMainWindow
 protected:
     
 private:
-    LandTableWidget * table;
+    LandTableWidget * tableView;
 public:
     MainWindow(QWidget *parent = nullptr, Qt::WindowFlags flags = ::defaultWindowFlags);
 private slots:
