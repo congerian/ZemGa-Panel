@@ -7,9 +7,9 @@ set ( PROJECT_VERSION 0.0.1 )
 set ( PROJECT_DESCRIPTION "ZemGa admin panel.")
 
 set ( CMAKE_CXX_STANDARD 17 )
-set ( CMAKE_CXX_STANDARD_REQUIRED ON)
+set ( CMAKE_CXX_STANDARD_REQUIRED ON )
 set ( CMAKE_POSITION_INDEPENDENT_CODE ON )
-set ( CMAKE_INCLUDE_CURRENT_DIR ON)
+set ( CMAKE_INCLUDE_CURRENT_DIR ON )
 
 #Project
 
@@ -22,6 +22,8 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Network)
 find_package(Qt6 REQUIRED COMPONENTS Core5Compat)
 find_package(Qt6 REQUIRED COMPONENTS Svg)
+find_package(Qt6 REQUIRED COMPONENTS Gui)
+find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
 
 qt_standard_project_setup()
 
@@ -100,7 +102,7 @@ PUBLIC_HEADER AM_PUBLIC_HEADERS
 RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
 VERSION ${PROJECT_VERSION} )
 
-target_link_libraries ( AM_COMMON PRIVATE Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat Qt6::Svg)
+target_link_libraries ( AM_COMMON PRIVATE Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat Qt6::Svg Qt6::Gui)
 target_link_libraries ( AM_COMMON ${CONAN_LIBS} )
 
 #Exe
@@ -133,5 +135,8 @@ qt_add_resources(AM_COMMON "common_res"
         "${AM_RES}"
 )
 
-target_link_libraries ( AM_EXE PRIVATE AM_COMMON ${CONAN_LIBS} Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat Qt6::Svg)
+qt_add_translations( AM_EXE
+    TS_FILES res/exe/translations/translation.ts )
+
+target_link_libraries ( AM_EXE PRIVATE AM_COMMON ${CONAN_LIBS} Qt6::Widgets Qt6::Core Qt6::Network Qt6::Core5Compat Qt6::Svg Qt6::Gui)
 
