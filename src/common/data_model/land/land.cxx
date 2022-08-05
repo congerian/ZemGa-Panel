@@ -1,14 +1,23 @@
 #include "./land.hxx"
 
+#include <iostream>
+
 namespace ZG::Panel
 {
 
 Land::Land (const Land::LandFields & fields) : fields{fields} {}
-Land::LandFields Land::getFields () const {return fields;}
 
 void from_json (const nlohmann::json & json, Land & land)
 {
-    json.at("fields").get_to(land.fields);
+    try { json.at("fields").get_to(land.fields); } catch (nlohmann::json::exception e) { std::cout << e.what() << "\n"; }
+}
+
+void to_json (nlohmann::json & json, const Land & land)
+{
+    json = nlohmann::json
+    {
+        {"fields", land.fields}
+    };
 }
 
 }

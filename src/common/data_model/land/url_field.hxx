@@ -6,15 +6,12 @@
 
 namespace ZG::Panel::LandInner{
 
+
 class URLField {
-    
-private:
-
-    std::string name;
-    std::string description;
-    std::string URL;
-
 public:
+    std::string name{};
+    std::string description{};
+    std::string URL{};
     
     URLField (
         const std::string & name,
@@ -25,12 +22,12 @@ public:
     URLField (const URLField & other) = default;
     URLField () = default;
 
-    std::string getName () const;
-    std::string getDescription () const;
-    std::string getURL () const;
-
     friend void from_json (const nlohmann::json & json, URLField & urlField);
+    friend void to_json   (nlohmann::json & json, const URLField & urlField);
 
 };
+
+void from_json (const nlohmann::json & json, URLField & urlField);
+void to_json   (nlohmann::json & json, const URLField & urlField);
 
 }
