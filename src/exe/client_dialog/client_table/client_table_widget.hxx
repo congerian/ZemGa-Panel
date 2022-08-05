@@ -2,22 +2,22 @@
 
 #include <QtWidgets>
 
-#include "./land_table_model.hxx"
+#include "./client_table_model.hxx"
 
 namespace ZG::Panel{
 
-class LandTableWidget : public QWidget
+class ClientTableWidget : public QWidget
 {
     Q_OBJECT
 protected:
 private:
     QTableView * _tableView;
-    LandTableModel * _model;
+    ClientTableModel * _model;
     QGridLayout * _layout;
 public:
-    explicit LandTableWidget(QWidget *parent = nullptr);
+    explicit ClientTableWidget(QWidget *parent = nullptr);
     QTableView * tableView();
-    LandTableModel * model();
+    ClientTableModel * model();
 private slots:
 };
 

@@ -11,12 +11,10 @@ ZG::Panel::Application::Application(int argc, char *argv[]) : QApplication(argc,
     }
 
     requester = new PanelRequester();
-    mainWindow = new MainWindow();
 }
 
 ZG::Panel::Application::~Application() 
 {
-    delete mainWindow;
     delete requester;
 }
 

@@ -1,28 +1,9 @@
 #pragma once
 
-#include <QtWidgets>
-
 #include "./land_table/land_table_widget.hxx"
+#include "util.hxx"
 
-namespace {
-    Qt::WindowFlags defaultWindowFlags = Qt::WindowFlags() 
-//        | Qt::MSWindowsFixedSizeDialogHint
-//        | Qt::X11BypassWindowManagerHint
-//        | Qt::FramelessWindowHint
-//        | Qt::NoDropShadowWindowHint
-//        | Qt::WindowTitleHint
-//        | Qt::WindowSystemMenuHint
-//        | Qt::WindowMinimizeButtonHint
-//        | Qt::WindowMaximizeButtonHint
-//        | Qt::WindowCloseButtonHint
-//        | Qt::WindowContextHelpButtonHint
-//        | Qt::WindowShadeButtonHint
-//        | Qt::WindowStaysOnTopHint
-//        | Qt::WindowStaysOnBottomHint
-//        | Qt::CustomizeWindowHint
-;
-
-}
+#include <QtWidgets>
 
 namespace ZG::Panel{
 
@@ -32,12 +13,28 @@ class MainWindow : public QMainWindow
 protected:
     
 private:
-    LandTableWidget * tableView;
+    LandTableWidget * tableWidget;
+
+    QAction * updateAction;
+    QAction * newAction;
+    QAction * editAction;
+    QAction * deleteAction;
+    QAction * contactsAction;
+
+    int selectedRow;
+
 public:
     MainWindow(QWidget *parent = nullptr, Qt::WindowFlags flags = ::defaultWindowFlags);
+
+public slots:
+    void update ();
 private slots:
-    void update();
-    
+    void createLand ();
+    void editLand ();
+    void deleteLand ();
+    void showContacts ();
+    void tableSelectionChanged (const QItemSelection &, const QItemSelection &);
+
 };
 
 

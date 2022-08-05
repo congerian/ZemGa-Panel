@@ -3,11 +3,11 @@
 #include <QtWidgets>
 #include <QNetworkReply>
 
-#include "data_model/land/land.hxx"
+#include "data_model/contact/contact.hxx"
 
 namespace ZG::Panel {
 
-class LandTableModel : public QAbstractTableModel {
+class ClientTableModel : public QAbstractTableModel {
     Q_OBJECT
 
 public:
@@ -16,7 +16,7 @@ public:
         SortRole = Qt::UserRole
     };
 
-    LandTableModel (QObject * parent = nullptr);
+    ClientTableModel (QObject * parent = nullptr);
     int rowCount (const QModelIndex &) const override;
     int columnCount (const QModelIndex &) const override;
     int rowCount () const;
@@ -24,12 +24,10 @@ public:
     QVariant data (const QModelIndex &index, int role) const override;
     QVariant headerData (int section, Qt::Orientation orientation, int role) const override;
     void tryFetchData ();
-    long getLandId (int row);
-    Land getLand (int id);
 
 private:
 
-    QList <Land> lands;
+    QList <Contact> contacts;
 
 public slots:
 

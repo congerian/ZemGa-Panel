@@ -1,6 +1,6 @@
-#include "./land_table_widget.hxx"
+#include "./client_table_widget.hxx"
 
-ZG::Panel::LandTableWidget::LandTableWidget(QWidget *parent) : QWidget(parent) {
+ZG::Panel::ClientTableWidget::ClientTableWidget (QWidget *parent) : QWidget(parent) {
     _layout = new QGridLayout(this);
     _layout->setSpacing(0);
     _layout->setContentsMargins(0,0,0,0);
@@ -15,11 +15,11 @@ ZG::Panel::LandTableWidget::LandTableWidget(QWidget *parent) : QWidget(parent) {
     _layout->addWidget(_tableView, 0, 0, 0, 0);
 
 
-    _model = new LandTableModel (this);
+    _model = new ClientTableModel (this);
     QSortFilterProxyModel * proxy = new QSortFilterProxyModel (_model);
     
     proxy->setSourceModel (_model);
-    proxy->setSortRole (LandTableModel::SortRole);
+    proxy->setSortRole (ClientTableModel::SortRole);
 
     _tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     _tableView->setSortingEnabled (true);
@@ -30,12 +30,12 @@ ZG::Panel::LandTableWidget::LandTableWidget(QWidget *parent) : QWidget(parent) {
 
 }
 
-QTableView * ZG::Panel::LandTableWidget::tableView()
+QTableView * ZG::Panel::ClientTableWidget::tableView()
 {
     return _tableView;
 }
 
-ZG::Panel::LandTableModel * ZG::Panel::LandTableWidget::model()
+ZG::Panel::ClientTableModel * ZG::Panel::ClientTableWidget::model()
 {
     return _model;
 }
